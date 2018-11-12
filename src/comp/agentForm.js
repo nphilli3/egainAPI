@@ -1,6 +1,7 @@
 import React from 'react';
 import {Form, FormGroup, Input, Button} from 'reactstrap'
 import $ from 'jquery'
+import ChooseFile from './chooseFile'
 
 
 export default class AgentForm extends React.Component {
@@ -28,22 +29,22 @@ export default class AgentForm extends React.Component {
   }
 
   handelSubmit(event) {
-  	var url = '/addAgent'
+  	var url = '/agent'
   	var formData = {
-  		firstName: this.state.firstName,
-		lastName: this.state.lastName,
-		screenName: this.state.firstName,
-		loginId: this.state.email,
-		password: 'Zulily@123',
-		emailAddress: this.state.email,
-		department: 'service',
-		group: this.state.group
+    	firstName: this.state.firstName,
+  		lastName: this.state.lastName,
+  		screenName: this.state.firstName,
+  		loginId: this.state.email,
+  		password: 'Zulily@123',
+  		emailAddress: this.state.email,
+  		department: 'service',
+  		group: this.state.group
   	}
-  	$.post(url, formData).done(function(res){
-  		alert(res.body + " Has been submitted");
+  	$.post(url, formData).done(function(data){
+  		alert( + " Has been submitted");
   	})
 
-    
+
 
     console.log(formData)
     event.preventDefault();
@@ -54,28 +55,28 @@ export default class AgentForm extends React.Component {
 	    <div>
 	      <Form action='/addAgent' >
 	      	<FormGroup>
-	      		<Input 
+	      		<Input
 	      		onChange= {this.handleInputChange}
-	      		type="text" 
-	      		name="firstName" 
+	      		type="text"
+	      		name="firstName"
 	      		placeholder="First Name"/>
 
-	      		<Input 
+	      		<Input
 	      		onChange= {this.handleInputChange}
-	      		type="text" 
-	      		name="lastName" 
+	      		type="text"
+	      		name="lastName"
 	      		placeholder="Last Name"/>
 
-	      		<Input 
+	      		<Input
 	      		onChange= {this.handleInputChange}
-	      		type="email" 
-	      		name="email" 
+	      		type="email"
+	      		name="email"
 	      		placeholder="Email"/>
 
-	      		<Input 
+	      		<Input
 	      		onChange= {this.handleInputChange}
-	      		type="select" 
-	      		name="group" 
+	      		type="select"
+	      		name="group"
 	      		placeholder="group">
 	      			<option></option>
 	      			<option>Tier1 Ohio</option>
@@ -87,6 +88,7 @@ export default class AgentForm extends React.Component {
 	      			<option>Knowledge</option>
 	      			<option>Admin</option>
 	      		</Input>
+            <ChooseFile/>
 	      		<Button onClick={this.handelSubmit}>Submit</Button>
 	      	</FormGroup>
 	      </Form>
