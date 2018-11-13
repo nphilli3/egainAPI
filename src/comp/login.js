@@ -1,7 +1,6 @@
 import React from 'react';
 import {Form, FormGroup, Input, Button} from 'reactstrap'
 import $ from 'jquery'
-import ChooseFile from './chooseFile'
 
 
 export default class Login extends React.Component {
@@ -27,15 +26,14 @@ export default class Login extends React.Component {
   }
 
   handelSubmit(event) {
-  	var url = '/agent'
-    var url2 = 'https://zulily.egain.cloud/system/ws/v12/administration/user'
+    var url = 'https://zulily.egain.cloud/system/ws/v12/administration/login'
   	var formData = {
     	userName: this.state.userName,
   		password: this.state.password,
   	}
 
     $.ajax({
-      url: url2,
+      url: url,
       headers: {
         'Content-Type':'application/json',
       },
