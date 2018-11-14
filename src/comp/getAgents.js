@@ -1,9 +1,11 @@
 
 import React from 'react';
 import { Card, CardTitle, CardText } from 'reactstrap';
+import $ from 'jquery'
 
 
-export default class AgentForm extends React.Component {
+export default class GetAgents extends React.Component {
+
 
 	constructor(props) {
     	super(props);
@@ -12,28 +14,20 @@ export default class AgentForm extends React.Component {
     	this.handleInputChange = this.handleInputChange.bind(this);
     	this.handelSubmit = this.handelSubmit.bind(this)
   	}
-	  getAgents(event){
+	getAgents(event){
 	  	$.get('/agent').done(function(data){
 	  		console.log(data)
+	  		this.setState({data:data})
 	  	})
-	  }
+    }
+    agentList(props){
+    	var data = this.state.data.map()
+    	
+    	return(
+    		{ths.state.data.map()
+    		)
+    	}
+    }
 
-	  const list = (
-	    <ul>
-	      {this.state.data.map((data) =>
-	        <li key={data.id}>
-	          {data.firstName}
-	        </li>
-	      )}
-	    </ul>
-	  );
-	render(){
-	  return (
-	    <div>
-	      {list}
-	    </div>
-	  );
-	}
-}
 
 

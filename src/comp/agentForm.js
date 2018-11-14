@@ -1,6 +1,7 @@
 import React from 'react';
 import {Form, FormGroup, Input, Button} from 'reactstrap'
 import $ from 'jquery'
+import GetAgents from './getAgents'
 
 
 export default class AgentForm extends React.Component {
@@ -15,9 +16,10 @@ export default class AgentForm extends React.Component {
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handelSubmit = this.handelSubmit.bind(this)
+    this.GetAgents = this.GetAgents.bind(this)
   }
 
-  
+  GetAgents = new GetAgents()
 
   handleInputChange(event) {
     const target = event.target;
@@ -124,7 +126,7 @@ export default class AgentForm extends React.Component {
 	      		</Input>
 	      		<Button onClick={this.handelSubmit}>Submit</Button>
 
-	      		<Button onClick={this.getAgents}>Get Agents</Button>
+	      		<Button onClick={this.GetAgents}>Get Agents</Button>
 	      	</FormGroup>
 	      </Form>
 	    </div>
