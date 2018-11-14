@@ -20,16 +20,17 @@ export default class LoginControl extends React.Component {
   }
 
   handleLoginClick(event) {
+
       var url = 'https://zulily.egain.cloud/system/ws/v12/authentication/user/login?forceLogin=yes'
       let sessionID = ''
       var formData = {
       	userName: this.state.userName,
     		password: this.state.password,
-        forceLogin: this.state.forceLogin
+        // forceLogin: this.state.forceLogin
     	}
 
       $.ajax({
-        url: url,
+        url: "/login",
         headers: {
           'Content-Type':'application/json',
         },

@@ -11,7 +11,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Col xs="4">
+        <Col xs="12">
         <MyCard cardTitle= "login"><LoginControl/></MyCard>
       	<MyCard cardTitle= "Agent Form"><AgentFrom/></MyCard>
         </Col>
