@@ -2,7 +2,6 @@ import React from 'react';
 import {Form, FormGroup, Input, Button} from 'reactstrap'
 import $ from 'jquery'
 
-
 export default class AgentForm extends React.Component {
   constructor(props) {
     super(props);
