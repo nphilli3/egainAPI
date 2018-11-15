@@ -20,17 +20,16 @@ export default class LoginControl extends React.Component {
   }
 
   handleLoginClick(event) {
-
       var url = 'https://zulily.egain.cloud/system/ws/v12/authentication/user/login?forceLogin=yes'
       let sessionID = ''
       var formData = {
       	userName: this.state.userName,
     		password: this.state.password,
-        // forceLogin: this.state.forceLogin
+        forceLogin: this.state.forceLogin
     	}
 
       $.ajax({
-        url: "/login",
+        url: url,
         headers: {
           'Content-Type':'application/json',
         },
@@ -107,19 +106,15 @@ export default class LoginControl extends React.Component {
           <Form action='/addAgent' >
             <FormGroup>
               <Input
-              onChange= {this.handleInputChange}
-              type="email"
-              name="userName"
-              placeholder="User Name"/>
+                onChange= {this.handleInputChange}
+                type="email"
+                name="userName"
+                placeholder="User Name"/>
               <Input
-              onChange= {this.handleInputChange}
-              type="password"
-              name="password"
-              placeholder="Password"/>
-              <FormGroup check>
-                <Input type="checkbox" name="forceLogin" />{this.handleCheckbox}
-                Force login
-              </FormGroup>
+                onChange= {this.handleInputChange}
+                type="password"
+                name="password"
+                placeholder="Password"/>
               <Button onClick={this.handleLoginClick}>Submit</Button>
             </FormGroup>
           </Form>

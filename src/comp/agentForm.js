@@ -1,7 +1,6 @@
 import React from 'react';
 import {Form, FormGroup, Input, Button} from 'reactstrap'
 import $ from 'jquery'
-import GetAgents from './getAgents'
 
 
 export default class AgentForm extends React.Component {
@@ -16,10 +15,7 @@ export default class AgentForm extends React.Component {
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handelSubmit = this.handelSubmit.bind(this)
-    this.GetAgents = this.GetAgents.bind(this)
   }
-
-  GetAgents = new GetAgents()
 
   handleInputChange(event) {
     const target = event.target;
@@ -47,7 +43,7 @@ export default class AgentForm extends React.Component {
     }
     var groupName = this.state.group
   	var url = '/agent'
-    //var url2 = 'https://zulily.egain.cloud/system/ws/v12/administration/user'
+    var url2 = 'https://zulily.egain.cloud/system/ws/v12/administration/user'
   	var formData = {
     	firstName: this.state.firstName,
   		lastName: this.state.lastName,
@@ -66,21 +62,21 @@ export default class AgentForm extends React.Component {
   	$.post(url, formData).done(function(data){
   		console.log(formData);
   	})
-  //   $.ajax({
-  //     url: url2,
-  //     headers: {
-  //       'X-egain-session':'c27bc3ef-1a37-4f29-9cee-efc4e12a9b92',
-  //       'Content-Type':'application/json',
-  //       'X-Frame-Options': 'SAMEORIGIN'
-  //     },
-  //     method: 'POST',
-  //     dataType: 'json',
-  //     data: formData,
-  //     success: function(data){
-  //       console.log('succes: '+data);
-  //     }
-  //   });
-  //   event.preventDefault();
+    $.ajax({
+      url: url2,
+      headers: {
+        'X-egain-session':'c27bc3ef-1a37-4f29-9cee-efc4e12a9b92',
+        'Content-Type':'application/json',
+        'X-Frame-Options': 'SAMEORIGIN'
+      },
+      method: 'POST',
+      dataType: 'json',
+      data: formData,
+      success: function(data){
+        console.log('succes: '+data);
+      }
+    });
+    event.preventDefault();
   }
 
   render() {
@@ -125,8 +121,6 @@ export default class AgentForm extends React.Component {
 	      			<option>Admin</option>
 	      		</Input>
 	      		<Button onClick={this.handelSubmit}>Submit</Button>
-
-	      		<Button onClick={this.GetAgents}>Get Agents</Button>
 	      	</FormGroup>
 	      </Form>
 	    </div>

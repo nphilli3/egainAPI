@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {Col} from 'reactstrap'
-import Login from './comp/login'
 import LoginControl from './comp/loginTest'
 import AgentFrom from './comp/agentForm'
 import MyCard from './comp/card'
@@ -21,6 +20,3 @@ class App extends Component {
 }
 
 export default App;
-
-
-
