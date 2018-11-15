@@ -4,6 +4,8 @@ import { Card, CardTitle, CardText, Button } from 'reactstrap';
 import $ from 'jquery'
 
 
+
+
 export default class GetAgents extends React.Component {
 
 
@@ -18,34 +20,40 @@ export default class GetAgents extends React.Component {
 
 	getAgents(event){
 	  	$.get('/agent').done(function(data){
-	  		console.log(data)
+				console.log(data)
 	  		this.setState({data:data})
-	  	})
+				this.agentList(data)
+	  	}.bind(this))
     }
-    agentList(state){
-    	var list = (
-    		<ul>
-    			{state.data.map((data)=>
-    				<li key={data.id}>
-    					{data.firstName}
-    				</li>
-    			)}
-    		</ul>
-    		)
 
-    	return(
-    		<div>{list}</div>
+		agentList(props){
+				console.log(props)
+				const list = props.rows.map((row)=>
 
-    	)
-    }
+					<ul>
+						<li key={row.id}>
+							{row.firstName}
+						</li>
+					</ul>
+				)
+				return(
+					<div>{list}</div>
+
+				)
+				console.log({list})
+			}
+
 
     render(){
     	return(
-    	<Button>Get agents</Button>
+				<div>
+				<div id="listcontainer">
+    			<Button onClick={this.getAgents}>Get agents</Button>
+				</div>
+					<div>
+						{this.getAgents}
+					</div>
+				</div>
     	)
     }
-
 }
-
-
-
