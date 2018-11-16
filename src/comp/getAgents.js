@@ -4,8 +4,8 @@ import { Card, CardTitle, CardText, Button } from 'reactstrap';
 import $ from 'jquery'
 import ReactDOM from 'react-dom'
 
-
-import AgentListItem from './agentListItem'
+import MyDropdown from './myDropdown'
+import AgentCard from './agentCard'
 
 export default class GetAgents extends React.Component {
 
@@ -41,9 +41,12 @@ export default class GetAgents extends React.Component {
 
 		const list = this.state.agents.map(function(row){
 				return (
-					<li key={row.id}>
-							{row.firstName} {row.lastName}
-					</li>
+					<div key={row.id}>
+						<MyDropdown label={row.firstName}>
+							<AgentCard row={row} />
+						</MyDropdown>
+							
+					</div>
 				)
 			}
 		)

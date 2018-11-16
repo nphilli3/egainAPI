@@ -28,38 +28,20 @@ export default class LoginControl extends React.Component {
     		password: this.state.password,
         forceLogin: this.state.forceLogin
     	}
-      $.post('/login').done(function(response){
+      $.post('/login',{
+        userName:this.state.userName, 
+        password:this.state.password}).done(function(response){
         this.setState({
+          isLoggedIn:true,
           response:response
         })
         console.log(this.state)
       }.bind(this))
   }
 
-  // handleTest(){
-  //   var settings = {
-  //     "async": true,
-  //     "crossDomain": true,
-  //     "url": "https://zulily.egain.cloud/system/ws/v12/authentication/user/login?forceLogin=Yes",
-  //     "method": "POST",
-  //     "headers": {
-  //       "Content-Type": "application/json",
-  //       "cache-control": "no-cache",
-  //       "Postman-Token": "0e6e6f52-b2ab-4624-9349-f0d4c7eb7a59"
-  //     },
-  //     "processData": false,
-  //     "data": "{\n\t\"userName\":\"nphillips@zulily.com\",\n\t\"password\":\"Password123\"\n\t}"
-  //   }
-
-  //   $.ajax(settings).done(function (response, b, c) {
-
-  //     console.log(response);
-  //   });
-  // }
-
   handleLogoutClick() {
-    this.setState({isLoggedIn: false});
-    var url = 'https://zulily.egain.cloud/system/ws/v12/authentication/user/logout'
+    ;
+    var url = '/login'
 
     $.ajax({
       url: url,
@@ -68,12 +50,13 @@ export default class LoginControl extends React.Component {
         'X-egain-session': this.state.session
       },
       method: 'DELETE',
-      // dataType: 'json',
-      // contentType: 'json',
-      // data: JSON.stringify(formData),
-      success: function(data){
-        console.log('succes: '+ data);
-      }
+      success: function(response){
+        this.setState({
+          isLoggedIn: false,
+          response:response
+        })
+        console.log('succes: '+ response);
+      }.bind(this)
     })
 
   }
