@@ -2,58 +2,67 @@
 import React from 'react';
 import { Card, CardTitle, CardText, Button } from 'reactstrap';
 import $ from 'jquery'
+import ReactDOM from 'react-dom'
 
 
-
+import AgentListItem from './agentListItem'
 
 export default class GetAgents extends React.Component {
 
 
 	constructor(props) {
     	super(props);
-    	this.state = [];
+    	this.state = {
+    		agents: []
+    	};
 
     	this.getAgents = this.getAgents.bind(this)
     	this.agentList = this.agentList.bind(this)
+
 
   	}
 
 	getAgents(event){
 	  	$.get('/agent').done(function(data){
-				console.log(data)
-	  		this.setState({data:data})
-				this.agentList(data)
+	  		this.setState({
+	  			agents:data.rows
+	  		})
+			this.agentList(data)
 	  	}.bind(this))
     }
 
-		agentList(props){
-				console.log(props)
-				const list = props.rows.map((row)=>
+    // handelAgentList(agents){
+    // 	agents.forEach(this.handelAgent)
+    // }
 
-					<ul>
-						<li key={row.id}>
-							{row.firstName}
-						</li>
-					</ul>
-				)
-				return(
-					<div>{list}</div>
+    // handelAgent(){}
 
+	agentList(){
+
+		const list = this.state.agents.map(function(row){
+				return (
+					<li key={row.id}>
+							{row.firstName} {row.lastName}
+					</li>
 				)
-				console.log({list})
 			}
-
+		)
+		return (
+			<ul>{list}</ul>
+		)
+	}
+   
 
     render(){
     	return(
+			<div>
 				<div>
-				<div id="listcontainer">
-    			<Button onClick={this.getAgents}>Get agents</Button>
+    				<Button onClick={this.getAgents}>Get agents</Button>
 				</div>
-					<div>
-						{this.getAgents}
-					</div>
-				</div>
+				{ this.agentList() }
+			</div>
     	)
     }
 }
+
+

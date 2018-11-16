@@ -1,6 +1,7 @@
 import React from 'react';
 import {Form, FormGroup, Input, Button, Label} from 'reactstrap'
 import $ from 'jquery'
+import request from 'request'
 
 
 export default class LoginControl extends React.Component {
@@ -10,8 +11,8 @@ export default class LoginControl extends React.Component {
     this.handleLogoutClick = this.handleLogoutClick.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this)
     this.state = {
-      userName: "",
-      password: "",
+      userName: "nphillips@zulily.com",
+      password: "Password123",
       isLoggedIn: false,
       forceLogin: "no",
       session:""
@@ -20,35 +21,41 @@ export default class LoginControl extends React.Component {
   }
 
   handleLoginClick(event) {
-      var url = 'https://zulily.egain.cloud/system/ws/v12/authentication/user/login?forceLogin=yes'
+      var url = '/login'
       let sessionID = ''
       var formData = {
       	userName: this.state.userName,
     		password: this.state.password,
         forceLogin: this.state.forceLogin
     	}
-
-      $.ajax({
-        url: url,
-        headers: {
-          'Content-Type':'application/json',
-        },
-        method: 'POST',
-        dataType: 'json',
-        contentType: 'json',
-        data: JSON.stringify(formData),
-        success: function(data, status, xhr){
-          sessionID = xhr.getResponseHeader('X-egain-session')
-          console.log(xhr.getAllResponseHeaders());
-        }
-      });
-      event.preventDefault();
-      this.setState({
-        isLoggedIn: true,
-        session: sessionID
-
-      })
+      $.post('/login').done(function(response){
+        this.setState({
+          response:response
+        })
+        console.log(this.state)
+      }.bind(this))
   }
+
+  // handleTest(){
+  //   var settings = {
+  //     "async": true,
+  //     "crossDomain": true,
+  //     "url": "https://zulily.egain.cloud/system/ws/v12/authentication/user/login?forceLogin=Yes",
+  //     "method": "POST",
+  //     "headers": {
+  //       "Content-Type": "application/json",
+  //       "cache-control": "no-cache",
+  //       "Postman-Token": "0e6e6f52-b2ab-4624-9349-f0d4c7eb7a59"
+  //     },
+  //     "processData": false,
+  //     "data": "{\n\t\"userName\":\"nphillips@zulily.com\",\n\t\"password\":\"Password123\"\n\t}"
+  //   }
+
+  //   $.ajax(settings).done(function (response, b, c) {
+
+  //     console.log(response);
+  //   });
+  // }
 
   handleLogoutClick() {
     this.setState({isLoggedIn: false});
