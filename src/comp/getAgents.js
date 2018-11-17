@@ -1,11 +1,10 @@
 
 import React from 'react';
-import { Card, CardTitle, CardText, Button } from 'reactstrap';
+import { Button, Collapse } from 'reactstrap';
 import $ from 'jquery'
-import ReactDOM from 'react-dom'
-
 import MyDropdown from './myDropdown'
-import AgentCard from './agentCard'
+import AgentForm from './agentForm'
+
 
 export default class GetAgents extends React.Component {
 
@@ -13,37 +12,41 @@ export default class GetAgents extends React.Component {
 	constructor(props) {
     	super(props);
     	this.state = {
+    		collapse:false,
     		agents: []
     	};
 
     	this.getAgents = this.getAgents.bind(this)
     	this.agentList = this.agentList.bind(this)
+    	this.toggle = this.toggle.bind(this)
 
 
   	}
+  	toggle() {
+    	this.setState({ collapse: !this.state.collapse });
+
+  }
 
 	getAgents(event){
+
 	  	$.get('/agent').done(function(data){
 	  		this.setState({
 	  			agents:data.rows
 	  		})
 			this.agentList(data)
+			this.toggle()
 	  	}.bind(this))
     }
 
-    // handelAgentList(agents){
-    // 	agents.forEach(this.handelAgent)
-    // }
-
-    // handelAgent(){}
-
 	agentList(){
 
-		const list = this.state.agents.map(function(row){
+		const list = this.state.agents.map((row)=>{
+			var title = row.firstName + ' ' + row.lastName
+
 				return (
 					<div key={row.id}>
-						<MyDropdown label={row.firstName}>
-							<AgentCard row={row} />
+						<MyDropdown ref={row.id} label={title}>
+							<AgentForm row={row}></AgentForm>
 						</MyDropdown>
 							
 					</div>
@@ -59,10 +62,10 @@ export default class GetAgents extends React.Component {
     render(){
     	return(
 			<div>
-				<div>
-    				<Button onClick={this.getAgents}>Get agents</Button>
-				</div>
-				{ this.agentList() }
+    			<Button onClick={this.getAgents}>Get agents</Button>
+				<Collapse isOpen={this.state.collapse}>
+					{ this.agentList() }
+				</Collapse>
 			</div>
     	)
     }

@@ -1,20 +1,56 @@
 import React from 'react';
 import {Form, FormGroup, Input, Button} from 'reactstrap'
 import $ from 'jquery'
+import ReactDOM from 'react-dom'
 
 export default class AgentForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      row:this.props,
       firstName: "",
       lastName: "",
       email: "",
-      group: ""
+      group: "",
+      showSubmit:"",
+      showUpdate:""
+
     };
+    if(!this.props.row){
+      this.state.showSubmit = ''
+      this.state.showUpdate = 'none'
+      this.state.showDelete = 'none'
+    }else{
+      this.state.showSubmit = 'none'
+      this.state.showUpdate = ''
+      this.state.showDelete = ''
+    }
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handelSubmit = this.handelSubmit.bind(this)
+    this.handelDelete= this.handelDelete.bind(this)
   }
+  handelDelete(){
+    if(!this.props.row){
+      return
+    }
+    var id = this.props.row.id
+    var url = '/agent/' + id
+    $.ajax({
+      url: url,
+      headers: {},
+      method: 'DELETE',
+      success: function(data){
+        console.log('succes: '+data);
+      }
+    })
+    debugger
+    // const newState = this.state
+    // const index = newState
+    // var agentForm1 = ReactDOM.findDOMNode(deleteRef)
+
+  }
+
 
   handleInputChange(event) {
     const target = event.target;
@@ -42,8 +78,7 @@ export default class AgentForm extends React.Component {
     }
     var groupName = this.state.group
   	var url = '/agent'
-    var url2 = 'https://zulily.egain.cloud/system/ws/v12/administration/user'
-  	var formData = {
+    var formData = {
     	firstName: this.state.firstName,
   		lastName: this.state.lastName,
   		screenName: this.state.firstName,
@@ -61,65 +96,98 @@ export default class AgentForm extends React.Component {
   	$.post(url, formData).done(function(data){
   		console.log(formData);
   	})
-    $.ajax({
-      url: url2,
-      headers: {
-        'X-egain-session':'c27bc3ef-1a37-4f29-9cee-efc4e12a9b92',
-        'Content-Type':'application/json',
-        'X-Frame-Options': 'SAMEORIGIN'
-      },
-      method: 'POST',
-      dataType: 'json',
-      data: formData,
-      success: function(data){
-        console.log('succes: '+data);
-      }
-    });
-    event.preventDefault();
+    // $.ajax({
+    //   url: url,
+    //   headers: {
+    //     'X-egain-session':'c27bc3ef-1a37-4f29-9cee-efc4e12a9b92',
+    //     'Content-Type':'application/json',
+    //     'X-Frame-Options': 'SAMEORIGIN'
+    //   },
+    //   method: 'POST',
+    //   dataType: 'json',
+    //   data: formData,
+    //   success: function(data){
+    //     console.log('succes: '+data);
+    //   }
+    // });
+    event.preventDefault()
+    var agentForm1 = ReactDOM.findDOMNode(this.refs.agentForm1)
+    agentForm1.reset()
+    return false
   }
 
   render() {
+    var agent = this.props.row
+    if(!agent){
+      agent = {
+        firstName: null,
+        lastName: null,
+        email: null,
+        group: null
+
+      }
+
+    }
+
     return (
 	    <div>
-	      <Form action='/addAgent' >
+	      <Form action='/addAgent' ref="agentForm1">
 	      	<FormGroup>
 	      		<Input
-	      		onChange= {this.handleInputChange}
-	      		type="text"
-	      		name="firstName"
-	      		placeholder="First Name"/>
+              defaultValue={agent.firstName}
+              onChange= {this.handleInputChange}
+  	      		type="text"
+  	      		name="firstName"
+  	      		placeholder="First Name"/>
 
 	      		<Input
-	      		onChange= {this.handleInputChange}
-	      		type="text"
-	      		name="lastName"
-	      		placeholder="Last Name"/>
+              defaultValue={agent.lastName}
+  	      		onChange= {this.handleInputChange}
+  	      		type="text"
+  	      		name="lastName"
+  	      		placeholder="Last Name"/>
 
 	      		<Input
-	      		onChange= {this.handleInputChange}
-	      		type="email"
-	      		name="email"
-	      		placeholder="Email"/>
+              defaultValue={agent.loginId}
+  	      		onChange= {this.handleInputChange}
+  	      		type="email"
+  	      		name="email"
+  	      		placeholder="Email"/>
 
 	      		<Input
-	      		onChange= {this.handleInputChange}
-	      		type="select"
-	      		name="group"
-	      		placeholder="group">
-	      			<option></option>
-	      			<option>Tier1Ohio</option>
-	      			<option>Tier1</option>
-	      			<option>Tier2</option>
-	      			<option>Tier3</option>
-	      			<option>International</option>
-              <option>Social</option>
-	      			<option>Supervisor</option>
-              <option>Trainers</option>
-	      			<option>Knowledge Specialist</option>
-              <option>Analyst</option>
-	      			<option>Admin</option>
+              defaultValue={agent.group}
+  	      		onChange= {this.handleInputChange}
+  	      		type="select"
+  	      		name="group"
+  	      		placeholder="group">
+  	      			<option></option>
+  	      			<option>Tier1Ohio</option>
+  	      			<option>Tier1</option>
+  	      			<option>Tier2</option>
+  	      			<option>Tier3</option>
+  	      			<option>International</option>
+                <option>Social</option>
+  	      			<option>Supervisor</option>
+                <option>Trainers</option>
+  	      			<option>Knowledge Specialist</option>
+                <option>Analyst</option>
+  	      			<option>Admin</option>
 	      		</Input>
-	      		<Button onClick={this.handelSubmit}>Submit</Button>
+	      		<Button 
+              style ={{display:this.state.showSubmit}} 
+              onClick={this.handelSubmit}>
+              Submit
+            </Button>
+            <Button
+              style ={{display:this.state.showUpdate}}  
+              onClick={this.handelUpdate}>
+              Update
+            </Button>
+            <Button
+              style ={{display:this.state.showDelete}}  
+              onClick={this.handelDelete}>
+              Delete
+            </Button>
 	      	</FormGroup>
 	      </Form>
 	    </div>

@@ -6,8 +6,8 @@ import { Collapse, Button } from 'reactstrap';
 class Mydropdown extends Component {
   constructor(props) {
     super(props);
-    this.toggle = this.toggle.bind(this);
     this.state = { collapse: false };
+    this.toggle = this.toggle.bind(this);
   }
 //set the toggle
   toggle() {

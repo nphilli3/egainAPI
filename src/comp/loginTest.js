@@ -1,7 +1,7 @@
 import React from 'react';
-import {Form, FormGroup, Input, Button, Label} from 'reactstrap'
+import {Form, FormGroup, Input, Button} from 'reactstrap'
 import $ from 'jquery'
-import request from 'request'
+
 
 
 export default class LoginControl extends React.Component {
@@ -22,13 +22,7 @@ export default class LoginControl extends React.Component {
 
   handleLoginClick(event) {
       var url = '/login'
-      let sessionID = ''
-      var formData = {
-      	userName: this.state.userName,
-    		password: this.state.password,
-        forceLogin: this.state.forceLogin
-    	}
-      $.post('/login',{
+      $.post(url,{
         userName:this.state.userName, 
         password:this.state.password}).done(function(response){
         this.setState({
@@ -114,7 +108,7 @@ export default class LoginControl extends React.Component {
 
     return (
       <div>
-        <h1 isLoggedIn={isLoggedIn}></h1>
+        <h1 isLoggedIn={isLoggedIn}>Login</h1>
         {button}
       </div>
     );
