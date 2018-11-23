@@ -24,12 +24,18 @@ export default class LoginControl extends React.Component {
       var url = '/login'
       $.post(url,{
         userName:this.state.userName, 
-        password:this.state.password}).done(function(response){
-        this.setState({
-          isLoggedIn:true,
-          response:response
-        })
-        console.log(this.state)
+        password:this.state.password}).done(function(response, status){
+          if(response.statusCode !== 204){
+            alert("Login Failed!")
+          }else{
+          debugger
+          this.setState({
+            isLoggedIn:true,
+            response: response,
+            session:response.headers['x-egain-session']
+          })
+
+        }
       }.bind(this))
   }
 
@@ -41,7 +47,7 @@ export default class LoginControl extends React.Component {
       url: url,
       headers: {
         'Content-Type':'application/json',
-        'X-egain-session': this.state.session
+        'x-egain-session': this.state.session
       },
       method: 'DELETE',
       success: function(response){
@@ -50,6 +56,8 @@ export default class LoginControl extends React.Component {
           response:response
         })
         console.log('succes: '+ response);
+        console.log(response);
+
       }.bind(this)
     })
 

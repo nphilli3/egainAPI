@@ -13,7 +13,20 @@ export default class AgentForm extends React.Component {
       email: "",
       group: "",
       showSubmit:"",
-      showUpdate:""
+      showUpdate:"",
+      groups: {
+        Tier1Ohio:"1618",
+        Tier1:"1617",
+        Tier2:"1621",
+        Tier3:"1622",
+        International:"1620",
+        Social:"1624",
+        Supervisor:"1619",
+        Trainers:"1625",
+        Knowledge:"1623",
+        Analyst:"1627",
+        Admin:"1626"
+      }
 
     };
     if(!this.props.row){
@@ -40,11 +53,12 @@ export default class AgentForm extends React.Component {
       url: url,
       headers: {},
       method: 'DELETE',
-      success: function(data){
-        console.log('succes: '+data);
+      success: function(response){
+        debugger
+        console.log('succes: '+ response.toString());
       }
     })
-    debugger
+
     // const newState = this.state
     // const index = newState
     // var agentForm1 = ReactDOM.findDOMNode(deleteRef)
@@ -63,19 +77,8 @@ export default class AgentForm extends React.Component {
   }
 
   handelSubmit(event) {
-    var groups = {
-      Tier1Ohio:"1618",
-      Tier1:"1617",
-      Tier2:"1621",
-      Tier3:"1622",
-      International:"1620",
-      Social:"1624",
-      Supervisor:"1619",
-      Trainers:"1625",
-      Knowledge:"1623",
-      Analyst:"1627",
-      Admin:"1626"
-    }
+    debugger
+
     var groupName = this.state.group
   	var url = '/agent'
     var formData = {
@@ -86,12 +89,13 @@ export default class AgentForm extends React.Component {
   		password: 'Zulily@123',
   		emailAddress: this.state.email,
   		department: 'service',
-  		groups: {
-        link:[{
-          rel:"group",
-          href: "/system/ws/v12/administration/group/" + groups[groupName]
-        }]
-      }
+      group: this.state.groups[groupName]
+  		// groups: {
+    //     link:[{
+    //       rel:"group",
+    //       href: "/system/ws/v12/administration/group/" + groups[groupName]
+    //     }]
+    //   }
   	}
   	$.post(url, formData).done(function(data){
   		console.log(formData);
@@ -116,6 +120,10 @@ export default class AgentForm extends React.Component {
     return false
   }
 
+  handelUpdate(event){
+
+  }
+
   render() {
     var agent = this.props.row
     if(!agent){
@@ -128,6 +136,10 @@ export default class AgentForm extends React.Component {
       }
 
     }
+    function getKeyByValue(object, value) {
+      return Object.keys(object).find(key => object[key] === value);
+    }
+
 
     return (
 	    <div>
@@ -155,7 +167,7 @@ export default class AgentForm extends React.Component {
   	      		placeholder="Email"/>
 
 	      		<Input
-              defaultValue={agent.group}
+              selected={getKeyByValue(this.state.groups, this.state.group)}
   	      		onChange= {this.handleInputChange}
   	      		type="select"
   	      		name="group"
@@ -174,16 +186,19 @@ export default class AgentForm extends React.Component {
   	      			<option>Admin</option>
 	      		</Input>
 	      		<Button 
+              id = {"submit " + agent.id}
               style ={{display:this.state.showSubmit}} 
               onClick={this.handelSubmit}>
               Submit
             </Button>
             <Button
+              id = {"update " + agent.id}
               style ={{display:this.state.showUpdate}}  
               onClick={this.handelUpdate}>
               Update
             </Button>
             <Button
+              id = {"delete " + agent.id}
               style ={{display:this.state.showDelete}}  
               onClick={this.handelDelete}>
               Delete
